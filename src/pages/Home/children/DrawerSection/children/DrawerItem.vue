@@ -1,11 +1,11 @@
 <template>
   <div class="pro_item">
-    <h4 class="item_title"><span>校淘商城自营店</span><span class="item_one">{{goods.unit_price | moneyFormat}}</span></h4>
+    <h4 class="item_title"><span>校淘商城自营店</span><span class="item_one">{{shopcar.unit_price | moneyFormat}}</span></h4>
     <div class="item_content">
       <div class="item-pic">
-        <img :src="goods.image"/>
+        <img :src="shopcar.image"/>
       </div>
-      <div class="item-info">{{goods.goods_name}}</div>
+      <div class="item-info">{{shopcar.goods_name}}</div>
     </div>
   </div>
 </template>
@@ -14,6 +14,15 @@
   import {mapState} from 'vuex'
 
   export default {
+    data(){
+      return{
+        shopcar:{
+          goods_name: "青春励志文学",
+          unit_price: 23.8,
+          image: "http://t00img.yangkeduo.com/t09img/images/2018-07-20/a6eb38f1b52054d149a0dcbf9539ebf2.jpeg"
+        }
+      }
+    },
     props: {
       goods: {
         type: Object,
@@ -24,38 +33,7 @@
       ...mapState(['userInfo']),
     },
     methods:{
-      // 更新单个商品数量
-      updateGoodsCount(goods, count){
-        let user_id = this.userInfo.id;
-        if(count === 0){
-          // 是否删除
-          this.$confirm('是否删除该商品?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            this.$store.dispatch('delSingleGoods', {goods, user_id});
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            });
-          }).catch(() => {
-            this.$store.dispatch('updateGoodsCount', {goods, count: 1, user_id});
-            this.$message({
-              type: 'info',
-              message: '已取消删除'
-            });
-          });
-          return;
-        }
-        this.$store.dispatch('updateGoodsCount', {goods, count, user_id});
-        this.$emit('computeShopCar');
-      },
-      // 单个商品的选中与否
-      singleSelected(goods){
-        this.$store.dispatch('singleSelected', {goods});
-        this.$emit('computeShopCar');
-      },
+      
     },
   }
 </script>

@@ -47,7 +47,13 @@
         currentIndex: 1,
         pageSize: 5,
         tableData: [],
-        tempData: [],
+        tempData: {
+          user_id: "lxl",
+          goods_id_list: "提花针织t恤女短袖2023年春装",
+          order_time: "2023/05/30 10:50:21",
+          address: "重庆市",
+          price: 203.5
+        },
       }
     },
     mounted(){
@@ -55,13 +61,14 @@
     },
     methods: {      
       handleCurrentChange(val) {
-        this.tempData = [];
-        this.getAllOrder();
+        //this.tempData = [];
+        //this.getAllOrder();
       },
       async getAllOrder(){
+        /**
         let result = await getAllOrders(userinfo.user_id);
         this.tableData = result.data;
-        this.tempData = this.tableData.data;
+        this.tempData = this.tableData.data; */
       },
     },
     computed: {

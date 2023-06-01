@@ -1,15 +1,16 @@
 <template>
-  <div id="container" v-if="goodsDetail[0]">
+  <div id="container" v-if="goodsDetail">
 			<div class="pro_detail">
 				<div class="pro_img">
 					<div class="tb_booth">
-            <img :src="goodsDetail[0].image_url" class="pro_middle_img"/>
+            <img src="http://t00img.yangkeduo.com/goods/images/2018-08-30/1093ac9bfaa77304a8c3f25d4bfcb743.jpeg" class="pro_middle_img" 
+            style="width: 100%;height: 50%;"/>
 					</div>
 				</div>
 				<div class="pro_meg">
 					<div class="pro_meg_hd">
 						<h1>
-					 		{{goodsDetail[0].goods_name}}
+					 		{{goodsDetail.goods_name}}
 						</h1>
 					</div>
 					<div class="pro_meg_price">
@@ -17,14 +18,14 @@
 							<dt>促销价</dt>
 							<dd>
 								<div class="promo_price">
-									<span class="tm-price">{{goodsDetail[0].unit_price | moneyFormat}}</span>
+									<span class="tm-price">{{goodsDetail.unit_price | moneyFormat}}</span>
 									<b>优惠促销</b>
 								</div>
 							</dd>
 						</dl>
             <dl>
 							<dt>市场价</dt>
-							<dd class="nor_price">{{goodsDetail[0].unit_price + 3 | moneyFormat }}</dd>
+							<dd class="nor_price">{{goodsDetail.unit_price + 3 | moneyFormat }}</dd>
 						</dl>
 						<dl>
 							<dt>本店优惠</dt>
@@ -46,63 +47,13 @@
 					</div>
 					<div class="pro_meg_console">
 						<dl class="tb-sku">
-							<dt>数量</dt>
-							<dd>
-								<div class="item-amout">
-									<el-input-number v-model="shopNum" :min="1" :max="goodsDetail[0].counts"></el-input-number>
-								</div>
-							</dd>
 						</dl>
 						<div class="shopping_car">
-							<el-button type="danger" @click.prevent="dealWithCellBtnClick(goodsDetail[0])">加入购物车</el-button>
+							<el-button type="danger" @click.prevent="dealWithCellBtnClick(goodsDetail)">加入购物车</el-button>
 						</div>
 					</div>
 				</div>
 			</div>
-      <div class="pro_comment">
-        <h3>商品评价</h3>
-        <div v-if="goodsDetail[0].comments_count">
-          <div class="media" v-for="(comment, index) in goodsComment" :key="index">
-            <div class="media-body">
-              <h6 class="media-heading" v-if="comment.user_nickname">用户:&nbsp;{{ comment.user_nickname }}</h6>
-              <h6 class="media-heading" v-else>用户:&nbsp;{{ comment.user_name | nameFormat }}</h6>
-              <span>评论:</span>&nbsp;{{comment.comment_detail}}
-              <el-rate
-                v-model="comment.comment_rating"
-                disabled
-                show-score
-                text-color="#ff9900">
-              </el-rate>
-            </div>
-          </div>
-        </div>
-        <div class="media" v-else>
-          <div class="media-body">
-            本商品暂无评论
-          </div>
-        </div>
-      </div>
-      <div class="pro_judge" v-if="userInfo.user_name">
-        <h3>评价该商品</h3>
-        <span>为该商品评分</span>
-        <el-rate
-          v-model="rating"
-          :colors="colors"
-          show-score
-          text-color="#ff9900">
-        </el-rate>
-        <el-input
-          type="textarea"
-          autosize
-          placeholder="请输入内容"
-          v-model="textarea">
-        </el-input>
-        <el-button type="primary" @click="post()">发布<i class="el-icon-edit el-icon--right"></i></el-button>
-      </div>
-      <div class="pro_judge" v-else>
-        <h3>评价该商品</h3>
-        <span class="judge_erro_tip">登录后才可发表评论</span>
-      </div>
 	</div>
 </template>
 
@@ -120,10 +71,18 @@
         colors: ['#99A9BF', '#F7BA2A', '#FF9900'],
         currentGoodsId: 0,
         shopNum: 1,
+        goodsDetail: {
+          goods_id: 8,
+          goods_name: "甜曲紫米面包550g",
+          unit_price: 55.9,
+          Image: "http://t00img.yangkeduo.com/goods/images/2018-08-30/1093ac9bfaa77304a8c3f25d4bfcb743.jpeg",
+          description: "面包",
+          type_id: 6
+        }
       }
     },
     computed: {
-      ...mapState(['goodsDetail','userInfo','goodsComment'])
+      ...mapState(['userInfo','goodsComment'])
     },
     created(){
       this.currentGoodsId = Number(this.$route.params.id);
@@ -146,8 +105,8 @@
          // 1. 发送请求
         // user_id, goods_id, goods_name, thumb_url, price, buy_count, counts
         if(this.userInfo.user_name){
-          let result = await addGoodsToCart(this.userInfo.id, goods.goods_id, goods.short_name, goods.thumb_url, goods.price, this.shopNum, goods.counts);
-          if(result.success_code === 200){
+          let result = await addGoodsToCart(this.userInfo.user_id, goods.goods_id);
+          if(result.message === "加入购物车成功！"){
              MessageBox({
               type: 'success',
               message: result.message,

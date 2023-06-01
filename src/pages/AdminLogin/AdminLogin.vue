@@ -34,7 +34,7 @@
           </div>
           <button class="login-submit" @click.prevent="login()">登录</button>
         </form>
-        <button class="login-back" @click="$router.back()">返回</button>
+        <button class="login-back" @click="back()">返回</button>
         
       </div>
     </div>
@@ -64,11 +64,13 @@
           return item.typeId === e.id;//筛选出匹配数据
       });
       this.typeId = e.id;
-      this.$forceUpdate()
     },
       // 密码的显示方式
       dealPwdMode(flag) {
         this.pwdMode = flag;
+      },
+      async back() { 
+          this.$router.replace('/home');
       },
       // 登录
       async login() {

@@ -34,10 +34,6 @@
     computed: {
       ...mapState(['userInfo'])
     },
-	created() {
-  		console.log(this.keywords); // 检查keywords的初始值
-	},
-
     methods:{
       goShopCar(){
         if(this.userInfo.id){

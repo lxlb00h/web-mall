@@ -22,7 +22,7 @@ export const getRecommendShopList = (params) => ajax(BASE_URL + '/specialist/sho
 export const getAllgoods = (currentPage, size) => ajax(BASE_URL + '/goods/showAllGoods',{currentPage, size});
 
 // 请求商品详细数据
-export const getGoodsDetail = (goods_id) => ajax(BASE_URL + '/goods/showDetail', goods_id);
+export const getGoodsDetail = (goods_id) => ajax(BASE_URL + '/goods/showDetail', {goods_id});
 
 // 请求商品评价
 export const getGoodsComment = (params) => ajax(BASE_URL + '/api/goodscomment', params);
@@ -58,7 +58,7 @@ export const changeUserPwd = (id, oriPwd, newPwd) => ajax(BASE_URL + '/userInfo/
 export const changeUserPhone = (id, phone, code) => ajax(BASE_URL + '/api/change_user_phone', {id, phone, code}, 'POST');
 
 // 加入购物车
-export const addGoodsToCart = (user_id, goods_id, goods_name, thumb_url, price,buy_count, counts) => ajax(BASE_URL + '/cart/addToCart', {user_id, goods_id, goods_name, thumb_url, price, buy_count, counts}, 'POST');
+export const addGoodsToCart = (user_id, goods_id) => ajax(BASE_URL + '/cart/addToCart', {user_id, goods_id});
 
 // 单个商品数量的改变
 export const changeGoodsCount = (goods_id, count, user_id) => ajax(BASE_URL + '/api/change_goods_count', {goods_id, count, user_id}, 'POST');

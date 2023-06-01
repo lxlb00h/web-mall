@@ -5,7 +5,7 @@
 				<div class="meg_shoppingbag">
 					<img src="../../img/meg_showcar.png" />
 					<p>购物车</p>
-					<div><span>{{userInfo.id ? cartgoods.length : 0}}</span></div>
+					<div><span>{{userInfo.id ? cartgoods.length : 1}}</span></div>
 				</div>
 				<a class="meg_top" @click.stop="scrollToTop">
 					<img src="../../img/meg_top.png" />
@@ -24,10 +24,7 @@
             </div>
             <a @click.prevent="goToShop">全屏查看</a>
           </div>
-          <div class="meg_content" v-if="userInfo.user_id">
-            <DrawerItem v-for="(goods) in cartgoods" :key="goods.goods_id" :goods="goods" @computeShopCar="computeShopCar"/>
-          </div>
-          <div class="meg_noLogin" v-else>请先登录~</div>
+            <DrawerItem />
           <div class="toolbar_footer">
             <div class="pro_total">
               <h3>

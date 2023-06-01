@@ -73,11 +73,7 @@
       },
       goAdmin(){
         let result = window.localStorage.getItem("adminInfo");
-        if(result){
-          this.$router.replace('/admin');
-        }else{
           this.$router.replace('/adminlogin');
-        }
       },
       goShopCar(){
         if(this.userInfo.id){
