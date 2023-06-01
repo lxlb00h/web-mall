@@ -74,7 +74,7 @@
 </template>
 
 <script>
-  import {getPhoneCode, phoneCodeLogin, pwdLogin} from './../../api/index';
+  import {getPhoneCode, phoneCodeLogin, pwdLogin,getUserInfoSingle} from './../../api/index';
   import { MessageBox } from 'element-ui';
   import {mapActions} from 'vuex'
 
@@ -203,9 +203,11 @@
           }
           // 5.5 用户名和密码的登录
           const result = await pwdLogin(this.user_id, this.password);
+        console.log(result.message)
           
-          if (result.message === "登录成功") {
-            this.userInfo = result.data;
+          if (result.message === "登录成功！") {
+            const user_result = await getUserInfoSingle(this.user_id);
+            this.userInfo = user_result.data;
             console.log(this.userInfo)
 			      this.phone = ''; // 手机号码
             this.countDown = 0; // 倒计时
@@ -216,32 +218,14 @@
           } else {
             MessageBox({
               type: 'info',
-              message: '登录失败, 账号或密码或验证码不正确!',
+              message: '登录失败, 账号或密码不正确!',
 			        showClose: true,
             });
           }
         }
-
-        // 6. 后续处理
-        if (!this.userInfo.id) { // 失败
-		        MessageBox({
-              type: 'info',
-              message: this.userInfo.message,
-			        showClose: true,
-            });
-        } else { // 成功
-          // 6.1 同步用户数据
-          this.syncUserInfo(this.userInfo);
-          // 6.2 回到主界面
-          MessageBox({
-            type: 'success',
-            message: '登录成功!',
-			      showClose: true,
-          });
-          this.$router.back();
+          this.$router.replace('/home');
           window.localStorage.setItem("userInfo",JSON.stringify(this.userInfo));
           window.localStorage.removeItem("adminInfo");
-        }
       }
     }
   }

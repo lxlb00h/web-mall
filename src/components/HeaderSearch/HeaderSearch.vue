@@ -34,6 +34,10 @@
     computed: {
       ...mapState(['userInfo'])
     },
+	created() {
+  		console.log(this.keywords); // 检查keywords的初始值
+	},
+
     methods:{
       goShopCar(){
         if(this.userInfo.id){
@@ -47,11 +51,11 @@
         }
       },
       async postSearch(){
-        if(this.keywords){
           let keywords = this.keywords;
-          this.$store.dispatch('reqSearch',{keywords});
+    	  let page = 1
+    	  let size = 3
+          this.$store.dispatch('reqSearch',{page, size, keywords});
           this.$router.replace('/searchdetail');
-        }
       },
     },
   }

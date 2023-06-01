@@ -1,9 +1,9 @@
 <template>
   <div class="pro">
-		<img v-lazy="pro.thumb_url" class="pro_img">
+		<img v-lazy="pro.image" class="pro_img">
 		<div class="pro_text">
-			<p><em>{{ pro.price / 100 | moneyFormat }}</em></p>
-			<p>{{ pro.short_name }}</p>
+			<p><em>{{ pro.unit_price | moneyFormat }}</em></p>
+			<p>{{ pro.goods_name }}</p>
 			<p>校淘商城自营店</p>
 		</div>
 		<div class="add_btn">

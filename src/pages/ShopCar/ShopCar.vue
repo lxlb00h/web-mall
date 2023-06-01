@@ -37,7 +37,7 @@
 						<li class="td td-amount">
 							<div class="item-amout">
                 <el-input-number v-model="goods.buy_count" :min="1" :max="goods.counts" @change="updateGoodsCount(goods, goods.buy_count)"></el-input-number>
-							</div>
+						</div>
 						</li>
 						<li class="td td-sum"><strong>{{goods.buy_count * goods.price /100 | moneyFormat}}</strong></li>
 						<li class="td td-op"><a @click="clickTrash(goods)">删除</a></li>
@@ -85,15 +85,16 @@
         totalPrice: 0,  // 商品总价
         currentDelGoods: {}, // 当前删除的商品
         totalAmount: 0,
+		cartgoods:[{goods_name:青春励志文学,}],
       }
     },
     computed: {
-      ...mapState(['userInfo', 'cartgoods']),
+      ...mapState(['userInfo']),
     },
     mounted() {
       let user_id = this.userInfo.id;
       // 请求商品数据
-      this.$store.dispatch('reqCartsGoods',{user_id});
+      this.$store.dispatch('reqCartsGoods',user_id);
     },
     methods: {
       // 1.更新单个商品数量

@@ -27,21 +27,7 @@
                 <el-menu-item index="1"  @click="goTo('/systemadmin/admininfo')">
                   <i class="el-icon-document-copy"></i>
                   <span slot="title">管理员信息</span>
-                </el-menu-item>
-                <!--
-                <el-menu-item index="2" @click="goTo('/admin/addgoods')">
-                  <i class="el-icon-edit"></i>
-                  <span slot="title">商品上架</span>
-                </el-menu-item>
-                <el-menu-item index="2" @click="goTo('/admin/adminusers')">
-                  <i class="el-icon-collection-tag"></i>
-                  <span>用户管理</span>
-                </el-menu-item>
-                <el-menu-item index="3" @click="goTo('/admin/adminsales')">
-                  <i class="el-icon-collection-tag"></i>
-                  <span>订单管理</span>
-                </el-menu-item>
-                -->
+                </el-menu-item>                
               </el-menu>
             </div>
           </nav>
@@ -62,7 +48,7 @@
     export default {
       created(){
          let result = window.localStorage.getItem("adminInfo");
-          if(result){
+          if(!result){
             MessageBox({
               type: 'info',
               message: "您还没登录",
@@ -75,26 +61,12 @@
       },
       methods:{
         logout(){
-          this.$confirm('您确定退出登录吗?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(async () => {
-            let result = await adminLogout();
-            if(result.success_code === 200){
-               this.$message({
-                type: 'success',
-                message: '退出成功!'
-              });
-              this.$router.replace('/home');
-              window.localStorage.removeItem("adminInfo");
-            }
-          }).catch(() => {
-            this.$message({
-              type: 'info',
-              message: '已取消退出'
-            });
+          this.$message({
+          type: 'success',
+          message: '退出成功!'
           });
+          this.$router.replace('/home');
+          window.localStorage.removeItem("adminInfo");
         },
         goTo(path){
           this.$router.replace(path);

@@ -24,7 +24,7 @@
             </div>
             <a @click.prevent="goToShop">全屏查看</a>
           </div>
-          <div class="meg_content" v-if="userInfo.id">
+          <div class="meg_content" v-if="userInfo.user_id">
             <DrawerItem v-for="(goods) in cartgoods" :key="goods.goods_id" :goods="goods" @computeShopCar="computeShopCar"/>
           </div>
           <div class="meg_noLogin" v-else>请先登录~</div>

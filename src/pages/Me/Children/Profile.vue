@@ -4,38 +4,28 @@
     <div class="user-detail-group">
       <div class="user-icon">
         <span>头像</span>
-        <img :src="userInfo.user_avatar" alt="">
+        <img :src="userInfo.image" alt="">
       </div>
       <div class="user-item">
         <span>手机</span>
-        <span>{{ userInfo.user_phone || '暂无' }}</span>
+        <span>{{ userInfo.phone || '暂无' }}</span>
       </div>
       <div class="user-item">
         <span>账号</span>
-        <span>{{ userInfo.user_name || '暂无' }}</span>
+        <span>{{ userInfo.user_id || '暂无' }}</span>
       </div>
       <div class="user-item">
         <span>昵称</span>
-        <span>{{ userInfo.user_nickname || '暂无' }}</span>
+        <span>{{ userInfo.nickname || '暂无' }}</span>
       </div>
       <div class="user-item">
         <span>性别</span>
-        <span>{{ userInfo.user_sex || '暂无' }}</span>
+        <span>{{ userInfo.gender || '暂无' }}</span>
       </div>
       <div class="user-item">
         <span>电子邮箱</span>
-        <span>{{ userInfo.user_address || '暂无' }}</span>
+        <span>{{ userInfo.email || '暂无' }}</span>
       </div>
-      <!--
-      <div class="user-item">
-        <span>生日</span>
-        <span>{{ userInfo.user_birthday || '暂无' }}</span>
-      </div>
-      <div class="user-item">
-        <span>个性签名</span>
-        <span>{{ userInfo.user_sign || '暂无' }}</span>
-      </div>
-      -->
     </div>
   </div>
 </template>

@@ -25,6 +25,7 @@ const AdminUsers = ()=> import('./../pages/Admin/Children/AdminUsers');
 const AdminInfo = ()=> import('./../pages/Admin/Children/AdminInfo');
 
 const GoodsSpecialst = ()=> import('./../pages/Admin/GoodsSpecialist');
+const AdminGoodsChange = ()=> import('./../pages/Admin/Children/AdminGoodsChange')
 const MarketManager = ()=> import('./../pages/Admin/MarketManager');
 const SystemAdmin = ()=> import('./../pages/Admin/SystemAdmin');
 
@@ -76,22 +77,11 @@ export default  new VueRouter({
 	  component: AdminLogin,
   },
   {
-	  path: '/admin',
-    component: Admin,
-    children: [
-      {path: 'adminsales', component: AdminSales},
-      {path: 'adminusers', component: AdminUsers},
-      {path: 'addgoods', component: AddGoods},
-      {path: 'admingoods', component: AdminGoods},
-      {path: 'adminupdate', component: AdminUpdate},
-      {path: '/admin',redirect: '/admin/admingoods'}
-    ],
-  },
-  {
     path:'/goodsspecialst',
     component: GoodsSpecialst,
     children: [
       {path: 'admingoods', component: AdminGoods},
+      {path: 'change',component: AdminGoodsChange},
       {path: '/goodsspecialst',redirect: '/goodsspecialst/admingoods'}
     ],
   },

@@ -12,25 +12,25 @@
           :before-upload="beforeAvatarUpload"
           :on-change="handleAvatarChange"
         >
-          <img v-if="user_avatar" :src="user_avatar_imgUrl" class="avatar">
+          <img v-if="icon" :src="icon" class="avatar">
           <img v-else src="../images/no_login.jpg" class="avatar">
           <i class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
       </div>
       <div class="user-item">
         <span>手机</span>
-        <span>{{ userInfo.user_phone || "暂未设置" }}</span>
+        <span>{{ userInfo.phone || "暂未设置" }}</span>
       </div>
       <div class="user-item">
         <span>账号</span>
-        <span>{{ userInfo.user_name || "暂未设置" }}</span>
+        <span>{{ userInfo.user_id || "暂未设置" }}</span>
       </div>
       <div class="user-item">
         <span>昵称</span>
         <el-input
           type="text"
           placeholder="请输入内容"
-          v-model="user_nickname"
+          v-model="nickname"
           maxlength="15"
           show-word-limit
           clearable
@@ -40,7 +40,7 @@
       </div>
       <div class="user-item">
         <span>性别</span>
-        <el-select v-model="user_sex" placeholder="请选择">
+        <el-select v-model="gender" placeholder="请选择">
           <el-option
            v-for="item in options"
           :key="item.value"
@@ -49,44 +49,6 @@
           </el-option>
         </el-select>
       </div>
-      <!--
-      <div class="user-item">
-        <span>常住地</span>
-        <el-input
-          type="text"
-          placeholder="请输入内容"
-          v-model="user_address"
-          maxlength="25"
-          show-word-limit
-          clearable
-          style="width:300px"
-        >
-        </el-input>
-      </div>
-      <div class="user-item">
-        <span>生日</span>
-        <el-date-picker
-          v-model="user_birthday"
-          type="date"
-          placeholder="选择日期"
-          value-format="yyyy-MM-dd">
-        </el-date-picker>
-      </div>
-      <div class="user-item">
-        <span>个性签名</span>
-        <el-input
-          type="text"
-          placeholder="请输入内容"
-          v-model="user_sign"
-          maxlength="15"
-          show-word-limit
-          clearable
-          style="width:220px"
-        >
-        </el-input>
-      </div>
-      -->
-
       <el-button type="danger" @click="saveUserInfo()">编辑</el-button>
     </div>
   </div>
@@ -101,13 +63,11 @@
     data() {
       return {
         user_sign: '',
-        user_address: '',
-        user_nickname: '',
-        user_sex: '',
-        user_phone: '',
-        user_birthday: '',
-        user_avatar_imgUrl: '',
-        user_avatar: null,
+        nickname: '',
+        gender: '',
+        phone: '',
+        icon: '',
+        email: '' ,
 
         options: [{
           value: '男',
@@ -120,11 +80,9 @@
     },
      mounted(){
         this.user_sign = this.userInfo.user_sign || '';
-        this.user_address = this.userInfo.user_address || '';
-        this.user_nickname = this.userInfo.user_nickname || '';
-        this.user_sex = this.userInfo.user_sex || '';
-        this.user_phone= this.userInfo.user_phone || '';
-        this.user_birthday= this.userInfo.user_birthday || '';
+        this.nickname = this.userInfo.user_nickname || '';
+        this.gender = this.userInfo.user_sex || '';
+        this.phone= this.userInfo.user_phone || '';
     },
     computed: {
       ...mapState(["userInfo"])
@@ -150,12 +108,12 @@
       async saveUserInfo(){
           // 3.1 请求接口
           let formData = new FormData();
-          formData.append('id', this.userInfo.id);
-          formData.append('user_nickname', this.user_nickname);
-          formData.append('user_sex', this.user_sex);
-          formData.append('user_address', this.user_address);
-          formData.append('user_birthday', this.user_birthday);
-          formData.append('user_sign', this.user_sign);
+          formData.append('user_id', this.userInfo.user_id);
+          formData.append('nickname', this.nickname);
+          formData.append('icon', this.icon);
+          formData.append('gender', this.gender);
+          formData.append('phone', this.phone);
+          formData.append('email', this.email);
           if(this.user_avatar){
             formData.append('user_avatar', this.user_avatar);
           }

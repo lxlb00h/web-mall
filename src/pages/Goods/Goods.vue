@@ -17,21 +17,18 @@
 							<dt>促销价</dt>
 							<dd>
 								<div class="promo_price">
-									<span class="tm-price">{{goodsDetail[0].price / 100 | moneyFormat}}</span>
+									<span class="tm-price">{{goodsDetail[0].unit_price | moneyFormat}}</span>
 									<b>优惠促销</b>
 								</div>
 							</dd>
 						</dl>
             <dl>
 							<dt>市场价</dt>
-							<dd class="nor_price">{{goodsDetail[0].normal_price /100 | moneyFormat }}</dd>
+							<dd class="nor_price">{{goodsDetail[0].unit_price + 3 | moneyFormat }}</dd>
 						</dl>
 						<dl>
 							<dt>本店优惠</dt>
 							<dd>包邮</dd>
-						</dl>
-            <dl>
-							<dt class="sale_tip">{{goodsDetail[0].sales_tip}}</dt>
 						</dl>
             <dl>
               <dt>服务承诺</dt>
@@ -54,7 +51,6 @@
 								<div class="item-amout">
 									<el-input-number v-model="shopNum" :min="1" :max="goodsDetail[0].counts"></el-input-number>
 								</div>
-								<span>库存</span><em>{{goodsDetail[0].counts}}</em><span>件</span>
 							</dd>
 						</dl>
 						<div class="shopping_car">
@@ -131,54 +127,19 @@
     },
     created(){
       this.currentGoodsId = Number(this.$route.params.id);
-      this.$store.dispatch('reqGoodsDetail', {
-          goodsNo: this.currentGoodsId
-      });
-      this.$store.dispatch('reqGoodsComment', {
-          goodsId: this.currentGoodsId
-      });
+      this.$store.dispatch('reqGoodsDetail', this.currentGoodsId);
     },
     watch:{
       $route(){
         this.currentGoodsId = Number(this.$route.params.id);
-        this.$store.dispatch('reqGoodsDetail', {
-          goodsNo: this.currentGoodsId
-        });
-        this.$store.dispatch('reqGoodsComment', {
-          goodsId: this.currentGoodsId
-        });
+        this.$store.dispatch('reqGoodsDetail', this.currentGoodsId);
         // 请求当前用户信息
         this.$store.dispatch('getUserInfo');
       }
     },
     methods:{
       async post(){
-        if(!this.textarea){
-           MessageBox({
-              type: 'info',
-              message: "评论不得为空",
-			        showClose: true,
-           });
-           return;
-        }
-        let result =  await postComment(this.goodsDetail[0].goods_id, this.textarea, this.rating, this.userInfo.id);
-        if(result.success_code === 200){
-          MessageBox({
-              type: 'success',
-              message: "发布成功",
-			        showClose: true,
-          });
-          this.textarea = '';
-          this.$store.dispatch('reqGoodsComment', {
-            goodsId: this.currentGoodsId
-          });
-        }else{
-          MessageBox({
-              type: 'info',
-              message: "发布失败",
-			        showClose: true,
-          });
-        }
+        
       },
       // 监听商品点击
       async dealWithCellBtnClick(goods){

@@ -25,14 +25,13 @@
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="props">
-          <el-button
-            size="mini"
-            @click="handleEdit(props.$index, props.row)">禁用</el-button>
-          <el-button
-            size="mini"
-            type="danger"
-            @click="handleDelete(props.$index, props.row)">启用</el-button>
-        </template>
+            <el-button
+              size="mini"
+              @click="handleEdit(props.$index, props.row)">启用</el-button>
+            <el-button
+              size="mini"
+              @click="handleDelete(props.$index, props.row)">禁用</el-button>
+          </template>
       </el-table-column>
     </el-table>
   </div>
@@ -55,6 +54,13 @@
       async getUsers(){
         const results = await getAllUsers(this.currentIndex, this.pageSize);
         this.tableData = results.data.data;
+        this.tableData.forEach(element => {
+          if(element.manager_use==1)
+            element.use = "已启用";
+          else if(element.manager_use==0)
+            element.use = "未启用";
+        });
+        console.log(this.tableData)
       }
     }
   }

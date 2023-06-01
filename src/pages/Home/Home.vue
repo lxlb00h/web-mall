@@ -21,35 +21,22 @@
 			  <!--轮播图-->
 				<el-col :span="14">
 					<el-carousel>
-					  <el-carousel-item v-for="item in 4" :key="item">
-						<img src="./img/homecasual2.jpg" class="bannerImg" />
-						<img src="./img/homecasual1.jpg" class="bannerImg" />
-						<img src="./img/homecasual3.jpg" class="bannerImg" />
-						<img src="./img/homecasual4.jpg" class="bannerImg" />
+					  <el-carousel-item v-for="item in images" :key="item">
+   						<img :src="item" class="bannerImg" />
 					  </el-carousel-item>
 					</el-carousel>
 				</el-col>
-				<!--data:{
-		return: {
-			homecasual:[
-				require('./img/homecasual1.jpg'),
-				{imgurl: require('./img/homecasual2.jpg')},
-				{imgurl: require('./img/homecasual3.jpg')},
-				{imgurl: require('./img/homecasual4.jpg')}
-			]
-		},
-	},-->
 				<!-- 登录信息板块 -->
 				<el-col :span="4" class="con_log">
 					<div>
-            		<img :src="userInfo.user_avatar" v-if="userInfo.user_avatar"/>
+            		<img :src="userInfo.image" v-if="userInfo.image"/>
 						<img src="./img/no_login.jpg" v-else/>
 					</div>
 					<p>Hi~ 欢迎来到校淘商城</p>
-					<p v-if="!userInfo.id"><router-link to="/login">登录</router-link><router-link to="/login">注册</router-link></p>
+					<p v-if="!userInfo.user_id"><router-link to="/login">登录</router-link><router-link to="/login">注册</router-link></p>
 					<p v-else class="userIn">
-            <a v-if="userInfo.user_nickname">您好,{{ userInfo.user_nickname }}</a>
-            <a v-else>您好,{{ userInfo.user_name | nameFormat }}</a>
+            <a v-if="userInfo.nickname">您好,{{ userInfo.nickname }}</a>
+            <a v-else>您好,{{ userInfo.user_id | nameFormat }}</a>
             <router-link to="/me">个人中心</router-link>
           </p>
 					<button class="welfare">新人福利</button>
@@ -66,7 +53,7 @@
 		</div>
 
 		<!--左侧微型购物车区域-->
-    <DrawerSection v-if="this.$route.path.indexOf('/home') != -1" @goShopCar="goShopCar"/>
+    	<DrawerSection v-if="this.$route.path.indexOf('/home') != -1" @goShopCar="goShopCar"/>
   </div>
 </template>
 
@@ -88,7 +75,11 @@
 			{type_name:"电子产品",type_id:9},
 			{type_name:"书籍",type_id:10}],
 			page: 1,
-			size: 5
+			size: 5,
+			images:["https://img.alicdn.com/imgextra/i3/6000000007967/O1CN01ZwvssJ28iwIX3nqRV_!!6000000007967-0-octopus.jpg",
+			'https://img.alicdn.com/imgextra/i3/6000000006567/O1CN01Hf3LP31yNjoBUiTQV_!!6000000006567-0-octopus.jpg',
+			'https://img.alicdn.com/imgextra/i4/6000000004887/O1CN01ZMenqp1lyIPoCUbSC_!!6000000004887-0-octopus.jpg',
+			'https://img.alicdn.com/imgextra/i3/6000000002135/O1CN01wNbqZn1RdsRYGvl1H_!!6000000002135-0-octopus.jpg']
 		}
 	},
     components: {
@@ -100,15 +91,9 @@
         this.$router.replace('/search/' + type_id + '/1');
       },
       goShopCar(){
-        if(this.userInfo.id){
-          this.$router.replace('/shopcar');
-        }else{
-          MessageBox({
-            type: 'info',
-            message: "请先登录!",
-			showClose: true,
-          });
-        }
+		console.log(this.userInfo.user_id)
+        this.$router.replace('/shopcar');
+        
       },
     },
     mounted() {
@@ -159,7 +144,11 @@
 		height: 100%;
 		border-top: 2px solid #FF0036;
 	}
-	.el-carousel .el-carousel-item img{
+	.el-carousel .el-carousel-item{
+		height: 100%;
+		width: 100%;
+	}
+	.bannerImg{
 		height: 100%;
 		width: 100%;
 	}

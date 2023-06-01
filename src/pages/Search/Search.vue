@@ -3,19 +3,11 @@
 		<div id="container">
 			<div class="product">
 				<div class="pro_line">
-					<h3 v-text="this.categoryList[this.currentCate-1].type_name"></h3>
-					<el-dropdown @command="handleCommand">
-					  <span class="el-dropdown-link">
-						  更多类别<i class="el-icon-arrow-down el-icon--right"></i>
-					  </span>
-					  <el-dropdown-menu slot="dropdown">
-						  <el-dropdown-item v-for="(cate, index) in categoryList" :key="index" :command="index+1">{{ cate.type_name }}</el-dropdown-item>
-					  </el-dropdown-menu>
-					</el-dropdown>
+					<h3 v-text="this.categoryList[this.currentCate-6].type_name"></h3>
 					<router-link to="/home" class="goHome">返回首页</router-link>
 				</div>
 				<div class="pro_show">
-          			<ProductItem v-for="(goods) in recommendshoplist" :key="goods.goods_id" :pro="goods"/>
+          			<ProductItem v-for="(goods) in typeshoplist" :key="goods.goods_id" :pro="goods"/>
 				</div>
 			</div>
 		</div>
@@ -32,15 +24,12 @@
 <script>
   import { mapState } from 'vuex'
   import ProductItem from '../../components/ProductItem/ProductItem'
+  import {getCategory} from './../../api/index';
 
   export default {
     data(){
       return{
-		categoryList:[{type_name:"食品",type_id:6},
-			{type_name:"日用品",type_id:7},
-			{type_name:"服装",type_id:8},
-			{type_name:"电子产品",type_id:9},
-			{type_name:"书籍",type_id:10}],
+		categoryList:[],
         activeIndex: 1,  // 当前页码
 			currentCate: 1,  // 当前分类
 			pageSize: 3,
@@ -50,7 +39,7 @@
       ProductItem
     },
     computed: {
-      ...mapState(['userInfo','recommendshoplist']),
+      ...mapState(['userInfo','typeshoplist']),
       catePages(){
         let arr = [];
         this.categoryList.forEach((cate, index)=>{
@@ -61,47 +50,49 @@
       }
     },
     created() {
-        this.currentCate = Number(this.$route.params.type_id);
+		this.getType();
+        this.currentCate = Number(this.$route.params.id);
         this.activeIndex = Number(this.$route.params.pageNo);
         // 请求当前页码的商品
-        this.$store.dispatch('reqRecommendShopList', {
+        this.$store.dispatch('reqTypeShopList', {
             currentPage: this.activeIndex,
 			size: this.pageSize,
-            keyword: this.currentCate,
+            type_id: this.currentCate,
         });
         // 请求当前用户信息
-        this.$store.dispatch('getUserInfo');
     },
     watch:{
       $route(){
         this.currentCate = Number(this.$route.params.id);
         this.activeIndex = Number(this.$route.params.pageNo);
-         this.$store.dispatch('reqRecommendShopList', {
-            category: this.currentCate,
-						pageNo: this.activeIndex,
-						count: this.pageSize
+         this.$store.dispatch('reqTypeShopList', {
+			currentPage: this.activeIndex,
+			size: this.pageSize,
+            type_id: this.currentCate,
         });
 			},
     },
     methods:{
-      handleCommand(command) {
-        this.$store.dispatch('reqRecommendShopList', {
-          category: command,
-          pageNo: 1,
-          count: this.pageSize
-        });
-        this.$router.replace('/search/' + command + "/1");
-        this.currentCate = command;
-        this.activeIndex = 1;
-      },
+	  async getType(){
+		let page = 1;
+        let size = 20;
+        let type_result = await getCategory(page,size);
+		type_result.data.data.forEach(item => {
+            this.categoryList.push({
+				type_name: item.type_name,
+				type_id: item.type_id
+			  })
+          });
+	  },
       goDetail(id){
         this.$router.replace('/goods/' + id);
       },
       getMore(index){
         if(index && index <= this.catePages[this.currentCate - 1]){
-          this.$store.dispatch('reqRecommendShopList', {
-            category: this.currentCate,
-            pageNo: index,
+          this.$store.dispatch('reqTypeShopList', {
+            currentPage: index,
+			size: this.pageSize,
+            type_id: this.currentCate,
           });
           this.activeIndex = index;
           this.$router.replace('/search/' + this.currentCate + "/" + this.activeIndex);

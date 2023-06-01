@@ -27,6 +27,9 @@
     computed: {
       ...mapState(['searchresults']),
     },
+	mounted(){
+		console.log(searchresults);
+	},
     methods:{
       goDetail(id){
         this.$router.replace('/goods/' + id);

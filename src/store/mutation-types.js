@@ -1,6 +1,7 @@
 export const HOME_CASUAL = 'home_casual'; // 首页轮播图
 export const CATEGORY_LIST = 'category_list'; // 首页轮播图
 export const HOME_SHOP_LIST = 'home_shop_list'; // 首页商品数据
+export const TYPE_SHOP_LIST = 'type_shop_list'; // 某类型商品数据
 export const RECOMMEND_SHOP_LIST = 'recommend_shop_list'; // 推荐商品数据
 export const GOODS_DETAIL = 'goods_detail'; // 获取商品详细信息
 export const GOODS_COMMENT = 'goods_comment'; // 获取商品评论

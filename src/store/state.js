@@ -5,6 +5,8 @@ export default {
   categoryList: [],
   // 首页的商品列表
   homeshoplist: [],
+  // 类型的商品列表
+  typeshoplist: [],
   // 推荐的商品列表
   recommendshoplist: [],
   // 商品详细信息

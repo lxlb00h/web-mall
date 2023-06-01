@@ -40,7 +40,7 @@
           return;
         }
 
-        let result = await changeUserPwd(this.userInfo.id, this.oriPwd, this.newPwd);
+        let result = await changeUserPwd(this.userInfo.user_name, this.newPwd);
         if(result.success_code === 200){
           this.$message({
             message: result.message,

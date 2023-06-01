@@ -8,18 +8,21 @@
           label="管理员ID">
         </el-table-column>
         <el-table-column
-          prop="manager_type"
-          label="账号">
+          prop="type"
+          label="类型">
+        </el-table-column>
+        <el-table-column
+          prop="use"
+          label="状态">
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="props">
             <el-button
               size="mini"
-              @click="handleEdit(props.$index, props.row)">编辑</el-button>
+              @click="handleEdit(props.$index, props.row)">启用</el-button>
             <el-button
               size="mini"
-              type="danger"
-              @click="handleDelete(props.$index, props.row)">删除</el-button>
+              @click="handleDelete(props.$index, props.row)">禁用</el-button>
           </template>
       </el-table-column>
     </el-table>
@@ -27,47 +30,56 @@
   </template>
   
   <script>
-    import {getAllUsers} from '../../../api/index'
+    import {getAllManager} from '../../../api/index'
+    import {changeManager} from '../../../api/index'
     export default {
       data() {
         return {
-          tableData: []
+          tableData: [],
+          currentIndex: 1,
+          pageSize: 10,
         }
       },
       mounted(){
-        this.getUsers();
+        this.getManagers();
       },
       methods: {
-        async getUsers(){
-          const results = await getAllUsers();
-          if(results.success_code === 200){
-            this.tableData = results.message;
-          }
+        async getManagers(){
+          const results = await getAllManager(this.currentIndex, this.pageSize);
+          this.tableData = results.data.data;
+          this.tableData.forEach(element => {
+            if(element.manager_type==1)
+              element.type = "商品专员";
+            else if(element.manager_type==2)
+              element.type = "营销经理";
+            else if(element.manager_type==3)
+              element.type = "系统管理员";
+              
+            if(element.manager_use==1)
+              element.use = "已启用";
+            else if(element.manager_use==0)
+              element.use = "未启用";
+          });
         },
-        handleEdit(index, row) {
-          console.log(index, row);
-          window.localStorage.setItem('goodsInfo',JSON.stringify(row));
-          this.$router.replace('/admin/adminupdate');
+        async handleEdit(index, row) {
+          let results = await changeManager({
+            manager_type: row.manager_type,
+            manager_id: row.manager_id,
+            password: row.password,
+            manager_use: 1
+          });
+          console.log(results.message);
+          this.$router.go(0);
         },
         async handleDelete(index, row) {
-          this.$confirm('您确定永久删除该商品吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then( async() => {
-		  let result = await deleteRecomGoods(row.goods_id);
-          if(result.success_code === 200){
-            this.$message({
-              type: 'success',
-              message: '已删除'
-            });
-          }
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
+          let results = await changeManager({
+            manager_type: row.manager_type,
+            manager_id: row.manager_id,
+            password: row.password,
+            manager_use: 0
           });
-        });
+          console.log(results.message);
+          this.$router.go(0);
         },        
       }
     }

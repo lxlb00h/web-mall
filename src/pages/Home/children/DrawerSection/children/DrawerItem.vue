@@ -1,18 +1,11 @@
 <template>
   <div class="pro_item">
-    <h4 class="item_title"><span>校淘商城自营店</span><span class="item_one">{{goods.price / 100 | moneyFormat}}</span></h4>
+    <h4 class="item_title"><span>校淘商城自营店</span><span class="item_one">{{goods.unit_price | moneyFormat}}</span></h4>
     <div class="item_content">
-      <div class="pro_Chk">
-        <input type="checkbox" class="pro_ChkElem" :checked="goods.checked" @click="singleSelected(goods)">
-      </div>
       <div class="item-pic">
-        <img :src="goods.thumb_url"/>
+        <img :src="goods.image"/>
       </div>
       <div class="item-info">{{goods.goods_name}}</div>
-        <div class="item-amout">
-          <el-input-number size="mini" v-model="goods.buy_count" :min="0" :max="goods.counts" @change="updateGoodsCount(goods, goods.buy_count)"></el-input-number>
-        </div>
-      <div class="item-sum"><strong>{{goods.buy_count * goods.price /100 | moneyFormat}}</strong></div>
     </div>
   </div>
 </template>

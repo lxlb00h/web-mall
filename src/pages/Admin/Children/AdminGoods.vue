@@ -13,7 +13,7 @@
               <span>{{ props.row.goods_name }}</span>
             </el-form-item>
             <el-form-item label="商品分类">
-              <span>{{ props.row.type_id }}</span>
+              <span>{{ props.row.type }}</span>
             </el-form-item>
             <el-form-item label="商品价格">
               <span>{{ props.row.unit_price }}</span>
@@ -31,7 +31,7 @@
       </el-table-column>
       <el-table-column
         label="类型"
-        prop="type_id">
+        prop="type">
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="props">
@@ -58,14 +58,13 @@
 </template>
 
 <script>
-  import {getAllgoods,deleteRecomGoods} from './../../../api/index';
+  import {getAllgoods,deleteRecomGoods,getCategory} from './../../../api/index';
   import {mapState} from 'vuex';
   import {mapActions} from 'vuex'
 
   export default {
     data() {
       return {
-        category: ['图书、音像','家居生活','服饰、箱包','电子产品','美食宝典'],
         currentIndex: 1,
         pageSize: 5,
         tableData: [],
@@ -79,7 +78,7 @@
       handleEdit(index, row) {
         console.log(index, row);
         window.localStorage.setItem('goodsInfo',JSON.stringify(row));
-        this.$router.replace('/admin/adminupdate');
+        this.$router.replace('/goodsspecialst/change');
       },
       async handleDelete(index, row) {
         this.$confirm('您确定永久删除该商品吗?', '提示', {
@@ -88,7 +87,7 @@
           type: 'warning'
         }).then( async() => {
 		  let result = await deleteRecomGoods(row.goods_id);
-          if(result.success_code === 200){
+          if(result.message === "删除成功！"){
             this.$message({
               type: 'success',
               message: '已删除'
@@ -108,8 +107,17 @@
       },
       async getAllGoods(){
         let result = await getAllgoods(this.currentIndex, this.pageSize);
+        let page = 1;
+        let size = 20;
+        let type_result = await getCategory(page,size);
         this.tableData = result.data;
         this.tempData = this.tableData.data;
+        this.tempData.forEach(element => {
+          type_result.data.data.forEach(item => {
+            if(item.type_id == element.type_id)
+              element.type = item.type_name;
+          });
+        });
       },
     },
     computed: {

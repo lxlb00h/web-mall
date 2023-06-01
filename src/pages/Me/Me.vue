@@ -39,17 +39,10 @@
                 </el-menu-item-group>
               </el-submenu>
               <!---->
-              <el-submenu index="3">
-                <template slot="title">
-                  <i class="el-icon-collection-tag"></i>
-                  <span>我的订单</span>
-                </template>
-                <el-menu-item-group>
-                  <el-menu-item index="3-1" @click="goTo('/me/sales')">待付款</el-menu-item>
-                  <el-menu-item index="3-2" @click="goTo('/me/sales')">待发货</el-menu-item>
-                  <el-menu-item index="3-3" @click="goTo('/me/sales')">待收货</el-menu-item>
-                </el-menu-item-group>
-              </el-submenu>
+              <el-menu-item index="3"  @click="goTo('/me/sales')">
+                <i class="el-icon-collection-tag"></i>
+                <span slot="title">我的订单</span>
+              </el-menu-item>
             </el-menu>
           </div>
         </nav>

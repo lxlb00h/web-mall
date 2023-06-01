@@ -43,7 +43,6 @@
     import {mapState} from 'vuex';
     import {mapActions} from 'vuex'
     import { MessageBox } from 'element-ui';
-    import {adminLogout} from '../../api/index'
   
     export default {
       created(){
@@ -61,26 +60,12 @@
       },
       methods:{
         logout(){
-          this.$confirm('您确定退出登录吗?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(async () => {
-            let result = await adminLogout();
-            if(result.success_code === 200){
-               this.$message({
-                type: 'success',
-                message: '退出成功!'
-              });
-              this.$router.replace('/home');
-              window.localStorage.removeItem("adminInfo");
-            }
-          }).catch(() => {
-            this.$message({
-              type: 'info',
-              message: '已取消退出'
-            });
+          this.$message({
+          type: 'success',
+          message: '退出成功!'
           });
+          this.$router.replace('/home');
+          window.localStorage.removeItem("adminInfo");
         },
         goTo(path){
           this.$router.replace(path);

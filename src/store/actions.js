@@ -3,6 +3,7 @@ import {
   getCategory,
   getHomeShopList,
   getRecommendShopList,
+  getTypeShopList,
   getGoodsDetail,
   getGoodsComment,
   getUserInfo,
@@ -18,6 +19,7 @@ import {
   HOME_CASUAL,
   CATEGORY_LIST,
   HOME_SHOP_LIST,
+  TYPE_SHOP_LIST,
   RECOMMEND_SHOP_LIST,
   GOODS_DETAIL,
   GOODS_COMMENT,
@@ -45,6 +47,12 @@ export default {
 	commit(HOME_SHOP_LIST, {homeshoplist: result.data});
   },
 
+  // 获取某类型的商品数据
+  async reqTypeShopList({commit}, params) {
+    const result = await getTypeShopList(params.currentPage, params.size, params.type_id);
+    commit(TYPE_SHOP_LIST, {typeshoplist: result.data.data});
+  },
+
   // 获取推荐的商品数据
   async reqRecommendShopList({commit}, params) {
     const result = await getRecommendShopList(params);
@@ -52,9 +60,9 @@ export default {
   },
 
   // 获取商品详细数据
-  async reqGoodsDetail({commit}, params) {
-      const result = await getGoodsDetail(params);
-      commit(GOODS_DETAIL, {goodsDetail: result.message});
+  async reqGoodsDetail({commit}, goods_id) {
+      const result = await getGoodsDetail(goods_id);
+      commit(GOODS_DETAIL, {goodsDetail: result.data});
   },
 
   // 获取商品评论
@@ -90,11 +98,9 @@ export default {
   },
 
   // 请求购物车数据
-  async reqCartsGoods({commit},params) {
-    const result = await getCartsGoods(params);
-    if(result.success_code === 200){
-      commit(CART_GOODS_LIST, {cartgoods: result.message})
-    }
+  async reqCartsGoods({commit},user_id) {
+    const result = await getCartsGoods(user_id);
+    commit(CART_GOODS_LIST, {cartgoods: result.message})
   },
 
   // 单个商品数量的改变
@@ -132,11 +138,9 @@ export default {
   },
 
   // 模糊搜索
-  async reqSearch({commit}, {keywords}){
-    const result = await searchKeywords(keywords);
-    if(result.success_code === 200){
-      let searchresults = result.message;
+  async reqSearch({commit},params){
+    const result = await searchKeywords(params);
+      let searchresults = result.data.data;
       commit(SEARCH_KEYWORDS, {searchresults});
-    }
   }
 }

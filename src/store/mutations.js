@@ -3,6 +3,7 @@ import {
   HOME_CASUAL,
   CATEGORY_LIST,
   HOME_SHOP_LIST,
+  TYPE_SHOP_LIST,
   RECOMMEND_SHOP_LIST,
   GOODS_DETAIL,
   GOODS_COMMENT,
@@ -29,6 +30,10 @@ export default {
 
   [HOME_SHOP_LIST](state, {homeshoplist}) {
     state.homeshoplist = state.homeshoplist.concat(homeshoplist);
+  },
+  
+  [TYPE_SHOP_LIST](state,{typeshoplist}){
+	  state.typeshoplist = typeshoplist;
   },
 
   [RECOMMEND_SHOP_LIST](state, {recommendshoplist}) {
